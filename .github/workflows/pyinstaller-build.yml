@@ -1,0 +1,43 @@
+# .github/workflows/pyinstaller-build.yml
+
+name: Build with PyInstaller
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0.0 などのタグをpushしたときに動く
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build executable
+        run: |
+          pyinstaller app.py --onefile
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-exe
+          path: dist/your_script.exe
+
+      - name: Create Release and Upload
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/your_script.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
