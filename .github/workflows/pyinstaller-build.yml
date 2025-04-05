@@ -38,6 +38,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: List the current directory contents
+        run: |
+          echo "Current directory contents:"
+          ls -alh
+
       - name: Activate virtual environment
         run: |
           .\venv\Scripts\activate  # 仮想環境をアクティブにする
