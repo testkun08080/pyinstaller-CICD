@@ -1,6 +1,6 @@
 # .github/workflows/pyinstaller-build.yml
 
-name: Build with PyInstaller
+name: Build(Win / Max) with PyInstaller
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
   workflow_dispatch:  # 手動でワークフローをトリガー可能にする
 
 jobs:
-  build:
-    runs-on: windows-latest
+  win_build:
+    runs-on: windows-latest  # Windowsビルド
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -49,21 +49,65 @@ jobs:
           name: app-exe
           path: dist/app.exe
 
+  mac_build:
+    runs-on: macos-latest  # Macビルド
+    needs: build  # 'build' ジョブが成功してから実行
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # 仮想環境内に依存関係をインストール
+
+      - name: List the current directory contents
+        run: |
+          echo "Current directory contents:"
+          ls -alh  # 現在のディレクトリの内容を詳細表示
+
+      - name: List installed packages (debug step)
+        run: |
+          pip list  # インストールされているパッケージを表示
+
+      - name: Build executable
+        run: |
+          pyinstaller app.py --onefile --distpath dist --name app  # Mac用のビルド
+
+      - name: List the current directory contents
+        run: |
+          echo "Current directory contents:"
+          ls -alh  # 現在のディレクトリの内容を詳細表示
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-mac
+          path: dist/app
+
   release:
     runs-on: ubuntu-latest
     needs: build  # 'build' ジョブが成功してから実行
-
     steps:
       - name: List the current directory contents
         run: |
           echo "Current directory contents:"
           ls -alh  # 現在のディレクトリの内容を詳細表示
 
-
-      - name: Download artifact
+      - name: Download artifact (Windows)
         uses: actions/download-artifact@v4
         with:
           name: app-exe
+
+      - name: Download artifact (Mac)
+        uses: actions/download-artifact@v4
+        with:
+          name: app-mac
 
       - name: List the current directory contents
         run: |
@@ -73,6 +117,8 @@ jobs:
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
         with:
-          files: app.exe  # リリースにアップロードするファイル
+          files: |
+            app.exe  # Windows用のビルド
+            app  # Mac用のビルド
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
