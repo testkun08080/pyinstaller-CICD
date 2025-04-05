@@ -1,5 +1,4 @@
 # .github/workflows/pyinstaller-build.yml
-
 name: Build with PyInstaller
 
 on:
@@ -35,7 +34,11 @@ jobs:
 
       - name: Build executable
         run: |
-          pyinstaller app.py --onefile
+          pyinstaller app.py --onefile --distpath dist --name app.exe
+
+      - name: List dist directory contents (debug step)
+        run: |
+          dir dist
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
