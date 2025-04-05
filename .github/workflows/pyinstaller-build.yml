@@ -43,10 +43,6 @@ jobs:
           echo "Current directory contents:"
           Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
 
-      - name: List dist directory contents (debug step)
-        run: |
-          dir dist
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -58,10 +54,21 @@ jobs:
     needs: build  # 'build' ジョブが成功してから実行
 
     steps:
+
+      - name: List the current directory contents
+        run: |
+          echo "Current directory contents:"
+          Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: app-exe
+
+      - name: List the current directory contents
+        run: |
+          echo "Current directory contents:"
+          Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
 
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
