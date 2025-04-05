@@ -1,0 +1,9 @@
+venv
+*.spec
+dist
+build
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
