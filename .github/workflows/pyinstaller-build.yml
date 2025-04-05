@@ -5,6 +5,7 @@ on:
   push:
     tags:
       - 'v*'  # v1.0.0 などのタグをpushしたときに動く
+  workflow_dispatch:  # 手動でワークフローをトリガー可能にする
       
 jobs:
   setup:
