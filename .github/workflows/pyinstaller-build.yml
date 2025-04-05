@@ -54,11 +54,11 @@ jobs:
     needs: build  # 'build' ジョブが成功してから実行
 
     steps:
-
       - name: List the current directory contents
         run: |
           echo "Current directory contents:"
-          Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
+          ls -alh  # 現在のディレクトリの内容を詳細表示
+
 
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -68,7 +68,7 @@ jobs:
       - name: List the current directory contents
         run: |
           echo "Current directory contents:"
-          Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
+          ls -alh  # 現在のディレクトリの内容を詳細表示
 
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
