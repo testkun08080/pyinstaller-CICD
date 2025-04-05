@@ -9,7 +9,7 @@ on:
   workflow_dispatch:  # 手動でワークフローをトリガー可能にする
 
 jobs:
-  setup:
+  build:
     runs-on: windows-latest
     steps:
       - name: Checkout code
@@ -30,22 +30,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt  # 仮想環境内に依存関係をインストール
 
-  build:
-    runs-on: windows-latest
-    needs: setup  # 'setup' ジョブが成功してから実行
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: List the current directory contents
         run: |
           echo "Current directory contents:"
           Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
-
-      - name: Activate virtual environment
-        run: |
-          .\venv\Scripts\activate  # 仮想環境をアクティブにする
 
       - name: List installed packages (debug step)
         run: |
