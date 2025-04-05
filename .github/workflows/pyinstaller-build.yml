@@ -41,7 +41,7 @@ jobs:
       - name: List the current directory contents
         run: |
           echo "Current directory contents:"
-          ls -alh
+          Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
 
       - name: Activate virtual environment
         run: |
@@ -58,7 +58,7 @@ jobs:
       - name: List the current directory contents
         run: |
           echo "Current directory contents:"
-          ls -alh
+          Get-ChildItem -Force  # 現在のディレクトリの内容を詳細表示
 
       - name: List dist directory contents (debug step)
         run: |
