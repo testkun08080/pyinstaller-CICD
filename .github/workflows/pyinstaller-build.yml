@@ -8,7 +8,7 @@ on:
       - 'v*'  # v1.0.0 などのタグをpushしたときに動く
 
 jobs:
-  build-windows:
+  setup:
     runs-on: windows-latest
 
     steps:
@@ -25,6 +25,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+  build:
+    runs-on: windows-latest
+    needs: setup  # 'setup' ジョブが成功してから実行
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Build executable
         run: |
           pyinstaller app.py --onefile
@@ -35,9 +43,19 @@ jobs:
           name: app-exe
           path: dist/app.exe
 
+  release:
+    runs-on: ubuntu-latest  # リリースをLinuxで行う場合（またはWindowsでも可）
+    needs: build  # 'build' ジョブが成功してから実行
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-exe
+
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/app.exe
+          files: dist/app.exe  # ダウンロードしたファイルをアップロード
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
