@@ -1,4 +1,5 @@
 # .github/workflows/pyinstaller-build.yml
+
 name: Build with PyInstaller
 
 on:
@@ -6,7 +7,7 @@ on:
     tags:
       - 'v*'  # v1.0.0 などのタグをpushしたときに動く
   workflow_dispatch:  # 手動でワークフローをトリガー可能にする
-      
+
 jobs:
   setup:
     runs-on: windows-latest
@@ -19,10 +20,15 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Create virtual environment
+        run: |
+          python -m venv venv  # 仮想環境を作成
+
       - name: Install dependencies
         run: |
+          .\venv\Scripts\activate  # 仮想環境をアクティブにする
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt  # 仮想環境内に依存関係をインストール
 
   build:
     runs-on: windows-latest
@@ -32,13 +38,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Activate virtual environment
+        run: |
+          .\venv\Scripts\activate  # 仮想環境をアクティブにする
+
       - name: List installed packages (debug step)
         run: |
           pip list  # インストールされているパッケージを表示
 
       - name: Build executable
         run: |
-          pyinstaller app.py --onefile --distpath dist --name app.exe
+          pyinstaller app.py --onefile --distpath dist --name app.exe  # pyinstallerでビルド
 
       - name: List the current directory contents
         run: |
