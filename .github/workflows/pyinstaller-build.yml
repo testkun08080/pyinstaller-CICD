@@ -33,11 +33,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-exe
-          path: dist/your_script.exe
+          path: dist/app.exe
 
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/your_script.exe
+          files: dist/app.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
