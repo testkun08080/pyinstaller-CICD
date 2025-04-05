@@ -118,7 +118,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            app.exe  # Windows用のビルド
-            app  # Mac用のビルド
+            app.exe
+            app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
