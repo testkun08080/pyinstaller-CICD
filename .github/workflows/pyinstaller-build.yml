@@ -9,7 +9,7 @@ on:
   workflow_dispatch:  # 手動でワークフローをトリガー可能にする
 
 jobs:
-  win_latest-build:
+  win_latest_build:
     runs-on: windows-latest  # Windowsビルド
     steps:
       - name: Checkout code
