@@ -1,6 +1,6 @@
 # .github/workflows/pyinstaller-build.yml
 
-name: Build(Win / Max) with PyInstaller
+name: Build(Win / Max) with PyInstaller - with UV
 
 on:
   push:
@@ -9,21 +9,22 @@ on:
   workflow_dispatch:  # 手動でワークフローをトリガー可能にする
 
 jobs:
-  win_build:
+  win_latest-build:
     runs-on: windows-latest  # Windowsビルド
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # 仮想環境内に依存関係をインストール
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
 
       - name: List the current directory contents
         run: |
@@ -32,11 +33,11 @@ jobs:
 
       - name: List installed packages (debug step)
         run: |
-          pip list  # インストールされているパッケージを表示
+          uv pip list  # インストールされているパッケージを表示
 
       - name: Build executable
         run: |
-          pyinstaller app.py --onefile --distpath dist --name app.exe  # pyinstallerでビルド
+          uv run pyinstaller app.py --onefile --distpath dist --name app_win.exe  # pyinstallerでビルド
 
       - name: List the current directory contents
         run: |
@@ -46,25 +47,26 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-exe
-          path: dist/app.exe
+          name: app-win-exe
+          path: dist/app_win.exe
 
-  mac_build:
-    runs-on: macos-latest  # Macビルド
-    needs: win_build  # 'win_build' ジョブが成功してから実行
+  mac_arm64_build:
+    runs-on: macos-15  # Mac_Arm64ビルド
+    needs: win_latest_build  # 'win_latest_build' ジョブが成功してから実行
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # 仮想環境内に依存関係をインストール
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+      
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
 
       - name: List the current directory contents
         run: |
@@ -73,11 +75,11 @@ jobs:
 
       - name: List installed packages (debug step)
         run: |
-          pip list  # インストールされているパッケージを表示
+          uv pip list  # インストールされているパッケージを表示
 
       - name: Build executable
         run: |
-          pyinstaller app.py --onefile --distpath dist --name app  # Mac用のビルド
+          uv run pyinstaller app.py --onefile --distpath dist --name app_mac_arm64  # Mac_arm64用のビルド
 
       - name: List the current directory contents
         run: |
@@ -87,12 +89,12 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-mac
-          path: dist/app
+          name: app-mac-arm64
+          path: dist/app_mac_arm64
 
   release:
     runs-on: ubuntu-latest
-    needs: mac_build  # 'mac_build' ジョブが成功してから実行
+    needs: mac_arm64_build  # 'mac_arm64_build' ジョブが成功してから実行
     steps:
       - name: List the current directory contents
         run: |
@@ -102,12 +104,12 @@ jobs:
       - name: Download artifact (Windows)
         uses: actions/download-artifact@v4
         with:
-          name: app-exe
+          name: app-win-exe
 
       - name: Download artifact (Mac)
         uses: actions/download-artifact@v4
         with:
-          name: app-mac
+          name: app-mac-arm64
 
       - name: List the current directory contents
         run: |
@@ -118,7 +120,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            app.exe
-            app
+            app_win.exe
+            app_mac_arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
