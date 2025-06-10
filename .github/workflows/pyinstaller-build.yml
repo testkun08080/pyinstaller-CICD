@@ -9,7 +9,7 @@ on:
   workflow_dispatch:  # 手動でワークフローをトリガー可能にする
 
 jobs:
-  win_latest_build:
+  win_build:
     runs-on: windows-latest  # Windowsビルド
     steps:
       - name: Checkout code
@@ -52,7 +52,7 @@ jobs:
 
   mac_arm64_build:
     runs-on: macos-15  # Mac_Arm64ビルド
-    needs: win_latest_build  # 'win_latest_build' ジョブが成功してから実行
+    needs: win_build  # 'win_build' ジョブが成功してから実行
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
