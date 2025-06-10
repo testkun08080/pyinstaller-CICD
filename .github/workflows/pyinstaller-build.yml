@@ -1,6 +1,6 @@
 # .github/workflows/pyinstaller-build.yml
 
-name: Build(Win / Max) with PyInstaller - with UV
+name: Build(Win / Mac-Arm64) with PyInstaller
 
 on:
   push:
