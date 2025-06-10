@@ -1,5 +1,3 @@
-# your_script.py
-
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 
