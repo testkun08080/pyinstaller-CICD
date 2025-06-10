@@ -1,6 +1,6 @@
 # 概要
 Pyinstallerを使ったPyQtのパッケージ作成から、
-github actionsを使ってwindows/macようにビルドして配布するまでの工程をここに残します。
+github actionsを使ってタグの作成に応じて、windows/macようにビルドして配布するまでの工程をここに残します。
 
 ## 開発環境
 - macOS Sequoia 15.5
@@ -17,12 +17,19 @@ github actionsを使ってwindows/macようにビルドして配布するまで�
 
 ## ローカルでのセットアップ
 
-1. UVを使ってプロジェクトの作成
+1. プロジェクトフォルダの作成
+   ```
+   mkdir pyinstaller-CICD
+   cd pyinstaller-CICD
+   ```
+
+2. UVを使ってプロジェクトの作成
     ```zsh
+   
     uv init -p 3.10
     uv add pyqt5 pyinstaller
     ```
-2. app.pyの作成
+3. app.pyの作成
    ```
    cat <<EOL > app.py
    import sys
@@ -47,15 +54,45 @@ github actionsを使ってwindows/macようにビルドして配布するまで�
       sys.exit(app.exec_())
    EOL
    ```
-1. ローカル起動テスト
+
+4. ローカル起動テスト
    ```zsh
    uv run app.py
    ```
-2. ローカルパッケージ作成テスト
+5. ローカルパッケージ作成テスト
    ```zsh
    uv run pyinstaller app.py
    ```
-3. パッケージ起動のテスト
+6. パッケージ起動のテスト
    ```
    uv run dist/app/app 
+   ```
+
+## GitHub ActionsでCI/CDを組む
+
+
+1. pyinstaller-build.ymlの作成
+   ```zsh
+   cat <<EOL > .github/workflows/pyinstaller-build.yml
+   aaaa
+   END
+   ```
+
+2. 新しいレポジトリの作成とコミット
+   ```bash
+   git init .
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/username/pyinstaller-CICD.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+3. タグの作成
+   ```
+   git tag -a v1.0.0 -m "Release version 1.0.0"
+   ```
+4. リリース
+   ```
+   git push origin v1.0.0
    ```
