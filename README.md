@@ -23,10 +23,11 @@ github actionsを使ってwindows/macようにビルドして配布するまで�
     uv add pyqt5 pyinstaller
     ```
 2. app.pyの作成
-   ```py
-   cat <<EOL > app.py
+   ```zsh
+    cat <<EOL > app.py
     import sys
     from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
+
     class HelloWindow(QWidget):
         def __init__(self):
             super().__init__()
@@ -46,15 +47,15 @@ github actionsを使ってwindows/macようにビルドして配布するまで�
         sys.exit(app.exec_())
     EOL
     ```
-3. ローカル起動テスト
+1. ローカル起動テスト
    ```zsh
    uv run app.py
    ```
-4. ローカルパッケージ作成テスト
+2. ローカルパッケージ作成テスト
    ```zsh
    uv run pyinstaller app.py
    ```
-5. パッケージ起動のテスト
+3. パッケージ起動のテスト
    ```
    uv run dist/app/app 
    ```
