@@ -1,5 +1,5 @@
 # 概要
-Pyinstallerを使ったPyQtのパッケージ作成から、
+Pyinstallerを使ったPyQtのパッケージ作成から、  
 github actionsを使ってタグの作成に応じて、windows/macようにビルドして配布するまでの工程をここに残します。
 
 ## 開発環境
@@ -25,7 +25,6 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
 
 2. UVを使ってプロジェクトの作成
     ```zsh
-   
     uv init -p 3.10
     uv add pyqt5 pyinstaller
     ```
@@ -70,9 +69,7 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
 
 ## GitHub ActionsでCI/CDを組む
 
-
-1. pyinstaller-build.ymlのダウンロード
-   .github/workflows/oldpyinstaller-build.yml
+1. `.github/workflows/oldpyinstaller-build.yml`のダウンロード  
    ```zsh
    # ダウンロードするファイルの正しいURL
    FILE_URL="curl -o "$TARGET_DIR/pyinstaller-build.yml" https://raw.githubusercontent.com/testkun08080/pyinstaller-CICD/refs/heads/main/.github/workflows/pyinstaller-build.yml"
