@@ -71,11 +71,28 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
 ## GitHub ActionsでCI/CDを組む
 
 
-1. pyinstaller-build.ymlの作成
+1. pyinstaller-build.ymlのダウンロード
+   .github/workflows/oldpyinstaller-build.yml
    ```zsh
-   cat <<EOL > .github/workflows/pyinstaller-build.yml
-   aaaa
-   END
+   # ダウンロードするファイルの正しいURL
+   FILE_URL="curl -o "$TARGET_DIR/pyinstaller-build.yml" https://raw.githubusercontent.com/testkun08080/pyinstaller-CICD/refs/heads/main/.github/workflows/pyinstaller-build.yml"
+
+   # 保存先ディレクトリ
+   TARGET_DIR=".github/workflows"
+
+   # 保存先ディレクトリを作成（存在しない場合のみ）
+   mkdir -p "$TARGET_DIR"
+
+   # ファイルをダウンロード
+   curl -o "$TARGET_DIR/pyinstaller-build.yml" "$FILE_URL"
+
+   # 結果の確認
+   if [ -f "$TARGET_DIR/pyinstaller-build.yml" ]; then
+      echo "ファイルが正常に保存されました: $TARGET_DIR/pyinstaller-build.yml"
+   else
+      echo "ダウンロードに失敗しました。"
+      exit 1
+   fi
    ```
 
 2. 新しいレポジトリの作成とコミット
@@ -96,3 +113,6 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    ```
    git push origin v1.0.0
    ```
+5. ご自身のリリースページへ行って以下の様にリリースされていれば成功です。
+   このレポのリリースページは[こんな感じ](https://github.com/testkun08080/pyinstaller-CICD/releases)です。
+   
