@@ -37,7 +37,7 @@ jobs:
 
       - name: Build executable
         run: |
-          uv run pyinstaller app.py --onefile --distpath dist --name app.exe  # pyinstallerでビルド
+          uv run pyinstaller app.py --onefile --distpath dist --name app_win.exe  # pyinstallerでビルド
 
       - name: List the current directory contents
         run: |
@@ -47,11 +47,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-exe
-          path: dist/app.exe
+          name: app-win-exe
+          path: dist/app_win.exe
 
   mac_build:
-    runs-on: macos-latest  # Macビルド
+    runs-on: macos-15  # Mac_Arm64ビルド
     needs: win_build  # 'win_build' ジョブが成功してから実行
     steps:
       - name: Checkout code
@@ -79,7 +79,7 @@ jobs:
 
       - name: Build executable
         run: |
-          uv run pyinstaller app.py --onefile --distpath dist --name app  # Mac用のビルド
+          uv run pyinstaller app.py --onefile --distpath dist --name app_mac_arm64  # Mac_arm64用のビルド
 
       - name: List the current directory contents
         run: |
@@ -89,8 +89,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-mac
-          path: dist/app
+          name: app-mac-arm64
+          path: dist/app_mac_arm64
 
   release:
     runs-on: ubuntu-latest
@@ -104,12 +104,12 @@ jobs:
       - name: Download artifact (Windows)
         uses: actions/download-artifact@v4
         with:
-          name: app-exe
+          name: app-win-exe
 
       - name: Download artifact (Mac)
         uses: actions/download-artifact@v4
         with:
-          name: app-mac
+          name: app-mac-arm64
 
       - name: List the current directory contents
         run: |
@@ -120,7 +120,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            app.exe
-            app
+            app_win.exe
+            app_mac_arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
