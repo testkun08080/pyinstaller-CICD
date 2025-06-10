@@ -114,5 +114,8 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    git push origin v1.0.0
    ```
 5. ご自身のリリースページへ行って以下の様にリリースされていれば成功です。
-   このレポのリリースページは[こんな感じ](https://github.com/testkun08080/pyinstaller-CICD/releases)です。
+
+   <img src="https://github.com/testkun08080/pyinstaller-CICD/blob/main/docs/sample-release.png">
    
+   このレポのリリースページは[こんな感じ](https://github.com/testkun08080/pyinstaller-CICD/releases)です。
+
