@@ -19,8 +19,8 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
 
 1. プロジェクトフォルダの作成
    ```
-   mkdir pyinstaller-CICD
-   cd pyinstaller-CICD
+   mkdir pyinstaller-CICD2
+   cd pyinstaller-CICD2
    ```
 
 2. UVを使ってプロジェクトの作成
@@ -71,14 +71,14 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
 
 1. `.github/workflows/oldpyinstaller-build.yml`のダウンロード  
    ```zsh
-   # ダウンロードするファイルの正しいURL
-   FILE_URL="curl -o "$TARGET_DIR/pyinstaller-build.yml" https://raw.githubusercontent.com/testkun08080/pyinstaller-CICD/refs/heads/main/.github/workflows/pyinstaller-build.yml"
-
    # 保存先ディレクトリ
    TARGET_DIR=".github/workflows"
 
    # 保存先ディレクトリを作成（存在しない場合のみ）
    mkdir -p "$TARGET_DIR"
+
+   # ダウンロードするファイルの正しいURL
+   FILE_URL="curl -o "$TARGET_DIR/pyinstaller-build.yml" https://raw.githubusercontent.com/testkun08080/pyinstaller-CICD/refs/heads/main/.github/workflows/pyinstaller-build.yml"
 
    # ファイルをダウンロード
    curl -o "$TARGET_DIR/pyinstaller-build.yml" "$FILE_URL"
