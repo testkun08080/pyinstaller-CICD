@@ -67,6 +67,17 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    uv run dist/app/app 
    ```
 
+
+
+
+
+git init .
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/testkun08080/pyinstaller-CICD2.git
+git branch -M main
+git push -u origin main
+
 ## GitHub ActionsでCI/CDを組む
 
 1. `.github/workflows/oldpyinstaller-build.yml`のダウンロード  
@@ -92,7 +103,22 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    fi
    ```
 
-2. 新しいレポジトリの作成とコミット
+2. project.tomlへ`win_amd64`用に設定を追加
+   ```
+   cat <<EOF >> pyproject.toml
+   [tool.uv]
+   constraint-dependencies = [
+      "pyqt5-qt5<=5.15.2; sys_platform == 'win_amd64'",
+   ]
+   EOF
+   ```
+
+4. 新しいレポジトリの作成
+   ```
+   gh repo create username/pyinstaller-CICD --public --source=. --remote=origin
+   ```
+
+5. コミットとプッシュ
    ```bash
    git init .
    git add .
@@ -102,15 +128,15 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    git push -u origin main
    ```
 
-3. タグの作成
+6. タグの作成
    ```
    git tag -a v1.0.0 -m "Release version 1.0.0"
    ```
-4. リリース
+7. リリース
    ```
    git push origin v1.0.0
    ```
-5. ご自身のリリースページへ行って以下の様にリリースされていれば成功です。
+8. ご自身のリリースページへ行って以下の様にリリースされていれば成功です。
 
    <img src="https://github.com/testkun08080/pyinstaller-CICD/blob/main/docs/sample-release.png">
    

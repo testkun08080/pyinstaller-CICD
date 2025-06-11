@@ -12,5 +12,4 @@ dependencies = [
 [tool.uv]
 constraint-dependencies = [
     "pyqt5-qt5<=5.15.2; sys_platform == 'win_amd64'",
-    "pyqt5-qt5>=5.15.16; sys_platform == 'linux'",
 ]
