@@ -67,17 +67,6 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    uv run dist/app/app 
    ```
 
-
-
-
-
-git init .
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/testkun08080/pyinstaller-CICD2.git
-git branch -M main
-git push -u origin main
-
 ## GitHub ActionsでCI/CDを組む
 
 1. `.github/workflows/oldpyinstaller-build.yml`のダウンロード  
@@ -123,8 +112,8 @@ git push -u origin main
    git init .
    git add .
    git commit -m "Initial commit"
-   git remote add origin https://github.com/username/pyinstaller-CICD.git
    git branch -M main
+   git remote add origin git@github.com:testkun08080/pyinstaller-CICD.git
    git push -u origin main
    ```
 
