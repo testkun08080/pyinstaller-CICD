@@ -92,22 +92,27 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    fi
    ```
 
-2. project.tomlへ`win_amd64`用に設定を追加
+2. project.tomlへ設定を追加
    ```
    cat <<EOF >> pyproject.toml
    [tool.uv]
+   environments = [
+      "sys_platform == 'win32'",
+      "sys_platform == 'darwin'",
+   ]
    constraint-dependencies = [
-      "pyqt5-qt5<=5.15.2; sys_platform == 'win_amd64'",
+      "pyqt5-qt5<=5.15.2; sys_platform == 'win32'",
+      "pyqt5-qt5>=5.15.17; sys_platform == 'darwin'",
    ]
    EOF
    ```
 
-4. 新しいレポジトリの作成
+3. 新しいレポジトリの作成
    ```
    gh repo create username/pyinstaller-CICD --public --source=. --remote=origin
    ```
 
-5. コミットとプッシュ
+4. コミットとプッシュ
    ```bash
    git init .
    git add .
@@ -117,15 +122,15 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
    git push -u origin main
    ```
 
-6. タグの作成
+5. タグの作成
    ```
    git tag -a v1.0.0 -m "Release version 1.0.0"
    ```
-7. リリース
+6. リリース
    ```
    git push origin v1.0.0
    ```
-8. ご自身のリリースページへ行って以下の様にリリースされていれば成功です。
+7. ご自身のリリースページへ行って以下の様にリリースされていれば成功です。
 
    <img src="https://github.com/testkun08080/pyinstaller-CICD/blob/main/docs/sample-release.png">
    
