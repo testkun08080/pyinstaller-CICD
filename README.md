@@ -69,7 +69,7 @@ github actionsを使ってタグの作成に応じて、windows/macようにビ�
 
 ## GitHub ActionsでCI/CDを組む
 
-1. `.github/workflows/oldpyinstaller-build.yml`のダウンロード  
+1. `.github/workflows/pyinstaller-build.yml`のダウンロード  
    ```zsh
    # 保存先ディレクトリ
    TARGET_DIR=".github/workflows"
