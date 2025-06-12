@@ -117,7 +117,7 @@ jobs:
           ls -alh  # 現在のディレクトリの内容を詳細表示
 
       - name: Create Release and Upload
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             app_win.exe
